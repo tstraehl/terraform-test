@@ -12,6 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install terraform
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update && apt-get install -y gnupg software-properties-common curl
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+          apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          apt-get update && apt-get install terraform=${{ env.TF_VERSION }}
+      
+      - name: Output Terraform Version Info
+        run: terraform version
+        
       - name: Generate tfvars Path
         id: tfvars
         run: echo "::set-output name=tfvars_file::tfvars/test.tfvars"
@@ -28,7 +39,4 @@ jobs:
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .aws/credentials
 
       - name: Terraform Format
-        uses: hashicorp/terraform-github-actions@0.8.0
-        with:
-          tf_actions_version: ${{ env.TF_VERSION }}
-          tf_actions_subcommand: fmt
+        run: terraform fmt
