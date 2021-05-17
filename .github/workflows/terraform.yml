@@ -28,7 +28,7 @@ jobs:
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .aws/credentials
 
       - name: Terraform Format
-        uses: terraform-github-actions@0.8.0
+        uses: hashicorp/terraform-github-actions@0.8.0
         with:
           tf_actions_version: ${{ env.TF_VERSION }}
           tf_actions_subcommand: fmt
