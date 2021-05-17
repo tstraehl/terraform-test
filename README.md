@@ -1,3 +1,3 @@
 # terraform-test
 
-First test
+First tests
